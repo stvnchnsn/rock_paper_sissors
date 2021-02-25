@@ -73,18 +73,21 @@ class Pinky(Robot):
         self.num_of_rounds_played +=1
         if self.num_of_rounds_played == 1:
             self.rand_1()
+            
             return self.selection
         else:
             if self.last_result == 0:
                 '''play random'''
                 self.rand_1()
+                
                 return self.selection
             if self.last_result == 1:
                 '''play same'''
-                return self.selection
+                return self.last_selection
             if self.last_result == -1:
                 '''play oppoenets choice'''
                 return self.last_opposing_choice
+        self.last_selection = self.selection
         
     def tell_results(self,result,opponent_choice):
         self.last_result = result
