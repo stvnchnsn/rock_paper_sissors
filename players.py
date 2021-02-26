@@ -34,8 +34,6 @@ class Player:
     def tell_results(self,result,opponent_choice):
         ''' Route the result to the robot'''
         pass
-    
-    
 class Human(Player):
     def decision(self):
         self.selection = input("Rock(r), Paper(p) or Sissors(s)?: ")
@@ -52,7 +50,6 @@ class Human(Player):
                     "invalid selection chooose 'r','p' or 's'"
         self.num_of_rounds_played +=1
         return self.selection
-
 class Robot(Player):
     def __init__(self,name):
         super().__init__(name)
@@ -60,8 +57,6 @@ class Robot(Player):
         self.last_result = None
     def rand_1(self):
         self.selection = self.hand_dict[random.randint(1,3)]
-
-
 class Random_Bot(Robot):
     '''returns random selection no matter what'''
     def decision(self):
@@ -73,25 +68,48 @@ class Pinky(Robot):
         self.num_of_rounds_played +=1
         if self.num_of_rounds_played == 1:
             self.rand_1()
-            
             return self.selection
         else:
             if self.last_result == 0:
                 '''play random'''
                 self.rand_1()
-                
+                self.last_selection = self.selection
                 return self.selection
             if self.last_result == 1:
                 '''play same'''
+                self.last_selection = self.selection
                 return self.last_selection
             if self.last_result == -1:
                 '''play oppoenets choice'''
+                self.last_selection = self.selection
                 return self.last_opposing_choice
-        self.last_selection = self.selection
-        
     def tell_results(self,result,opponent_choice):
         self.last_result = result
         self.last_opposing_choice = opponent_choice
-
+class TheBrain(Robot):
+    def decision(self):
+        self.num_of_rounds_played +=1
+        if self.num_of_rounds_played == 1:
+            self.rand_1()
+            return self.selection
+        else:
+            if self.last_result == 0:
+                '''play random'''
+                self.rand_1()
+                self.last_selection = self.selection
+                return self.selection
+            if self.last_result == 1:
+                '''play same'''
+                win_choice_logic = {'r':'s','s':'p','p':'r'}
+                self.last_selection = self.selection
+                return win_choice_logic[self.selection]
+            if self.last_result == -1:
+                '''play oppoenets choice'''
+                loss_choice_logic = {'r':'p','p':'s','s':'r'}
+                self.last_selection = self.selection
+                return loss_choice_logic[self.selection]
+    def tell_results(self,result,opponent_choice):
+        self.last_result = result
+        self.last_opposing_choice = opponent_choice
 if __name__ == '__main__':
     protocol()

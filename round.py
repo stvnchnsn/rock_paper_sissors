@@ -2,20 +2,20 @@ import time
 from players import Human
 from players import Random_Bot
 from players import Pinky
+from players import TheBrain
 
-def battle_of_the_bots():
-    roy = Random_Bot('Roy')
-    asimov = Random_Bot('Asimov')
+def battle_of_the_bots(robots):
+    robot1 = robots[0]
+    robot2 = robots[1]
     choices = []
-    for i in range(5):
-        round = Round(roy,asimov)
+    for i in range(10000):
+        round = Round(robot1,robot2)
         #round.count_down()
         round.players_choice()
         round.hand_analyzer()
         choices.append(round.results())
-    print("{}'s score: ".format(roy.name()),roy.score())
-    print("{}'s score: ".format(asimov.name()),asimov.score())
-    print(choices)
+    print("{}'s score: ".format(robot1.name()),robot1.score())
+    print("{}'s score: ".format(robot2.name()),robot2.score())
 
 
 
@@ -35,16 +35,16 @@ def human_v_robot(robot):
     print("{}'s score: ".format(robot.name()),robot.score())
     print(choices)
 
-protocol = human_v_robot
+protocol = battle_of_the_bots
 asimov = Random_Bot('Asimov')
 pinky = Pinky('Pinky')
-robot = pinky
+brain = TheBrain("The Brain")
+robot = [brain,pinky]
 
 class Round:
     def __init__(self,Player1,Player2):
         self.player1 = Player1
         self.player2 = Player2
- 
     def count_down(self):
         for i in range(1,4):
             print(i)
